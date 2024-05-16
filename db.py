@@ -5,6 +5,7 @@ def create_connection():
     conn = sqlite3.connect('customer.db')
     return conn
 
+
 def signup(conn, name, surname, username, password):
     cursor = conn.cursor()
     cursor.execute('SELECT COUNT(*) FROM TBL_USERS WHERE username = ?', (username,))

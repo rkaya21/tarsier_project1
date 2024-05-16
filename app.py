@@ -1,5 +1,3 @@
-import char
-
 from db import login, signup, create_connection, forgotpass, infoup
 
 def print_menu():
@@ -12,23 +10,23 @@ def print_menu():
 
 def get_valid_choice():
     while True:
-        choice = input("Please enter a number (1, 2, 3, or 4): ")
-        if not choice.isdigit():
+        user_choice = input("Please enter a number (1, 2, 3, or 4): ")
+        if not user_choice.isdigit():
             print("Please enter a valid number.")
         else:
-            choice = int(choice)
-            if choice not in [1, 2, 3, 4]:
+            user_choice = int(user_choice)
+            if user_choice not in [1, 2, 3, 4]:
                 print("Please enter a valid number.")
             else:
-                return choice
+                return user_choice
 
 
-def get_valid_input(prompt, special_characters):
+def get_valid_input(prompt, special_character):
     while True:
         user_input = input(prompt).strip()
         if not user_input:
             print("Please enter a value.")
-        elif any(char in user_input for char in special_characters):
+        elif any(char in user_input for char in special_character):
             print("Please enter a value without special characters.")
         else:
             return user_input
@@ -39,7 +37,7 @@ while True:
     print_menu()
     choice = get_valid_choice() # choice from the menu
 
-    conn = create_connection() # db.py => create connection function.This function connect databse
+    conn = create_connection() # db.py => create connection function.This function connect database
 
     if choice == 1: # The user sign up option.
         name = get_valid_input("Name: ", special_characters) # prompt => name
