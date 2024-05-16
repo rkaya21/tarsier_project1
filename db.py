@@ -5,6 +5,23 @@ def create_connection():
     conn = sqlite3.connect('customer.db')
     return conn
 
+def signup(conn, name, surname, username, password):
+    cursor = conn.cursor()
+    cursor.execute('SELECT COUNT(*) FROM TBL_USERS WHERE username = ?', (username,))
+    user_count = cursor.fetchone()[0]
+
+    if user_count > 0:
+        print("Username Taken.")
+    else:
+        try:
+            cursor.execute("""
+            INSERT INTO TBL_USERS (name, surname, username, password) VALUES (?, ?, ?, ?)"""
+                           ,(name, surname, username, password))
+            conn.commit()
+            print("Successful")
+        except sqlite3.Error as error:
+            print("Error:", error)
+
 def login(conn, username):
     cursor = conn.cursor()
 
@@ -24,23 +41,6 @@ def login(conn, username):
         print(f"Database Error: {e}")
     finally:
         cursor.close()
-
-def signup(conn, name, surname, username, password):
-    cursor = conn.cursor()
-    cursor.execute('SELECT COUNT(*) FROM TBL_USERS WHERE username = ?', (username,))
-    user_count = cursor.fetchone()[0]
-
-    if user_count > 0:
-        print("Username Taken.")
-    else:
-        try:
-            cursor.execute("""
-            INSERT INTO TBL_USERS (name, surname, username, password) VALUES (?, ?, ?, ?)"""
-                           ,(name, surname, username, password))
-            conn.commit()
-            print("Successful")
-        except sqlite3.Error as error:
-            print("Error:", error)
 
 
 def forgotpass(conn, username):
